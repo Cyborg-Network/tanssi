@@ -80,6 +80,7 @@ use {
 
 pub use pallet_worker_registration;
 pub use pallet_faucet;
+pub use pallet_edge_connect;
 
 pub mod xcm_config;
 
@@ -665,6 +666,11 @@ impl pallet_faucet::Config for Runtime {
 	type WeightInfo = pallet_faucet::weights::SubstrateWeight<Runtime>;
 }
 
+impl pallet_edge_connect::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = ();
+}
+
 // implement `CreateSignedTransaction` to allow `create_transaction` of offchain worker for runtime
 impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for Runtime
 where
@@ -766,6 +772,8 @@ construct_runtime!(
         
         // Cyborg Core
         WorkerRegistration: pallet_worker_registration = 120,
+
+        EdgeConnect: pallet_edge_connect = 122,
 
         // Testing
         Faucet: pallet_faucet::{Pallet, Call, Storage, Event<T>} = 200,

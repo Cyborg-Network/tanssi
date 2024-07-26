@@ -28,6 +28,7 @@ pallet-cc-authorities-noting = { workspace = true }
 runtime-common = { workspace = true }
 pallet-worker-registration = { verson = "0.1.0", default-features = false, path = "../../../pallets/worker-registration" }
 pallet-faucet = { verson = "1.0.3", default-features = false, path = "../../../pallets/faucet" }
+pallet-edge-connect = { verson = "0.1.0", default-features = false, path = "../../../pallets/edge-connect" }
 
 # Moonkit
 async-backing-primitives = { workspace = true }
