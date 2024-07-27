@@ -81,6 +81,7 @@ use {
 pub use pallet_worker_registration;
 pub use pallet_faucet;
 pub use pallet_edge_connect;
+pub use pallet_task_management;
 
 pub mod xcm_config;
 
@@ -222,7 +223,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     spec_name: create_runtime_str!("container-chain-template"),
     impl_name: create_runtime_str!("container-chain-template"),
     authoring_version: 1,
-    spec_version: 701,
+    spec_version: 704,
     impl_version: 0,
     apis: RUNTIME_API_VERSIONS,
     transaction_version: 1,
@@ -671,6 +672,11 @@ impl pallet_edge_connect::Config for Runtime {
 	type WeightInfo = ();
 }
 
+impl pallet_task_management::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = ();
+}
+
 // implement `CreateSignedTransaction` to allow `create_transaction` of offchain worker for runtime
 impl<LocalCall> frame_system::offchain::CreateSignedTransaction<LocalCall> for Runtime
 where
@@ -774,6 +780,7 @@ construct_runtime!(
         WorkerRegistration: pallet_worker_registration = 120,
 
         EdgeConnect: pallet_edge_connect = 122,
+        TaskManagement: pallet_task_management = 123,
 
         // Testing
         Faucet: pallet_faucet::{Pallet, Call, Storage, Event<T>} = 200,

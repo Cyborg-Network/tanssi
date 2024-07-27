@@ -1979,6 +1979,7 @@ dependencies = [
  "pallet-root-testing",
  "pallet-session",
  "pallet-sudo",
+ "pallet-task-management",
  "pallet-timestamp",
  "pallet-transaction-payment",
  "pallet-transaction-payment-rpc-runtime-api",
@@ -9471,6 +9472,23 @@ dependencies = [
  "frame-system 4.0.0-dev",
  "parity-scale-codec",
  "scale-info",
+ "sp-io 23.0.0",
+ "sp-runtime 24.0.0",
+ "sp-std 8.0.0 (git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.6.0)",
+]
+
+[[package]]
+name = "pallet-task-management"
+version = "0.1.0"
+dependencies = [
+ "frame-benchmarking 36.0.0",
+ "frame-support 4.0.0-dev",
+ "frame-system 4.0.0-dev",
+ "log",
+ "pallet-edge-connect",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-core 21.0.0",
  "sp-io 23.0.0",
  "sp-runtime 24.0.0",
  "sp-std 8.0.0 (git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-v1.6.0)",
