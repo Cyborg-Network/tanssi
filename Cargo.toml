@@ -50,6 +50,9 @@ unsafe-code = { level = "deny", priority = 1 }
 
 [workspace.dependencies]
 
+# Local 
+cyborg-primitives = { path = "primitives/cyborg", default-features = false }
+
 # Members
 pallet-author-noting = { path = "pallets/author-noting", default-features = false }
 pallet-author-noting-runtime-api = { path = "pallets/author-noting/runtime-api", default-features = false }
