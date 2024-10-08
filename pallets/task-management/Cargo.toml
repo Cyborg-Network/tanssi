@@ -1,0 +1,53 @@
+[package]
+name = "pallet-task-management"
+description = "Creation and management of tasks for workers to consume"
+version = "0.1.0"
+authors.workspace = true
+repository.workspace = true
+edition = "2021"
+publish = false
+
+[package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]
+
+[dependencies]
+parity-scale-codec = { workspace = true, default-features = false, features = [
+	"derive",
+] }
+scale-info = { workspace = true , default-features = false, features = ["derive"] }
+
+# frame deps
+frame-benchmarking = { vworkspace = true, optional = true }
+frame-support = { workspace = true }
+frame-system = { workspace = true }
+
+# Local
+pallet-edge-connect = { verson = "0.1.0", default-features = false, path = "../edge-connect" }
+
+sp-core = { workspace = true }
+sp-io = { workspace = true }
+log = { workspace = true }
+
+[dev-dependencies]
+sp-runtime = { workspace = true }
+sp-std = { workspace = true }
+
+[features]
+default = ["std"]
+runtime-benchmarks = [
+	"frame-benchmarking/runtime-benchmarks",
+	"frame-support/runtime-benchmarks",
+	"frame-system/runtime-benchmarks",
+]
+std = [
+	"parity-scale-codec/std",
+	"frame-benchmarking?/std",
+	"frame-support/std",
+	"frame-system/std",
+	"scale-info/std",
+	"pallet-edge-connect/std",
+]
+try-runtime = [
+	"frame-support/try-runtime",
+	"frame-system/try-runtime",
+]
