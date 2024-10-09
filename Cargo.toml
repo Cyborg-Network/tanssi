@@ -15,6 +15,8 @@ members = [
 	"solo-chains/node/*",
 	"solo-chains/runtime/dancelight",
 	"solo-chains/runtime/dancelight/constants",
+#	"orml/oracle",
+#	"orml/traits",
 ]
 resolver = "2"
 

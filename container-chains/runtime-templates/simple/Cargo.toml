@@ -30,6 +30,10 @@ cyborg-primitives = { workspace = true }
 pallet-edge-connect = { workspace = true }
 pallet-task-management = { workspace = true }
 
+# Orml 
+#orml-oracle = { workspace = true }
+#orml-traits = { workspace = true }
+
 # Moonkit
 async-backing-primitives = { workspace = true }
 nimbus-primitives = { workspace = true }
@@ -51,6 +55,7 @@ frame-system-rpc-runtime-api = { workspace = true }
 pallet-asset-rate = { workspace = true }
 pallet-assets = { workspace = true }
 pallet-balances = { workspace = true }
+pallet-membership = { workspace = true }
 pallet-message-queue = { workspace = true }
 pallet-multisig = { workspace = true }
 pallet-proxy = { workspace = true }
@@ -140,6 +145,7 @@ std = [
 	"pallet-cc-authorities-noting/std",
 	"pallet-foreign-asset-creator/std",
 	"pallet-maintenance-mode/std",
+	"pallet-membership/std",
 	"pallet-message-queue/std",
 	"pallet-migrations/std",
 	"pallet-multisig/std",
@@ -186,6 +192,8 @@ std = [
 	"cyborg-primitives/std",
 	"pallet-edge-connect/std",
 	"pallet-task-management/std",
+#	"orml-oracle/std",
+#	"orml-traits/std",
 #	"pallet-status-aggregator/std",
 ]
 
@@ -211,6 +219,7 @@ runtime-benchmarks = [
 	"pallet-balances/runtime-benchmarks",
 	"pallet-cc-authorities-noting/runtime-benchmarks",
 	"pallet-foreign-asset-creator/runtime-benchmarks",
+	"pallet-membership/runtime-benchmarks",
 	"pallet-message-queue/runtime-benchmarks",
 	"pallet-migrations/runtime-benchmarks",
 	"pallet-multisig/runtime-benchmarks",
@@ -234,6 +243,8 @@ runtime-benchmarks = [
 	"pallet-edge-connect/runtime-benchmarks",
 	"pallet-task-management/runtime-benchmarks",
 	"pallet-task-management/runtime-benchmarks",
+#	"orml-oracle/runtime-benchmarks",
+#	"orml-traits/runtime-benchmarks",
 #	"pallet-status-aggregator/runtime-benchmarks",
 ]
 
