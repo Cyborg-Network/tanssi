@@ -27,6 +27,7 @@ dp-slot-duration-runtime-api = { workspace = true }
 pallet-cc-authorities-noting = { workspace = true }
 tanssi-runtime-common = { workspace = true }
 cyborg-primitives = { workspace = true }
+pallet-edge-connect = { workspace = true }
 
 # Moonkit
 async-backing-primitives = { workspace = true }
@@ -182,6 +183,7 @@ std = [
 	"xcm-primitives/std",
 	"xcm-runtime-apis/std",
 	"cyborg-primitives/std",
+	"pallet-edge-connect/std",
 ]
 
 # Allow to print logs details (no wasm:stripped)
@@ -226,6 +228,7 @@ runtime-benchmarks = [
 	"tanssi-runtime-common/runtime-benchmarks",
 	"xcm-primitives/runtime-benchmarks",
 	"xcm-runtime-apis/runtime-benchmarks",
+	"pallet-edge-connect/runtime-benchmarks",
 ]
 
 try-runtime = [

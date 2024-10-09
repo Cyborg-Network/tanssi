@@ -88,6 +88,11 @@ use {
 
 pub mod xcm_config;
 
+
+pub use pallet_edge_connect;
+// pub use pallet_status_aggregator;
+// pub use pallet_task_management;
+
 // Polkadot imports
 use polkadot_runtime_common::BlockHashCount;
 
@@ -661,6 +666,17 @@ impl pallet_multisig::Config for Runtime {
 
 impl_tanssi_pallets_config!(Runtime);
 
+
+impl pallet_edge_connect::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = pallet_edge_connect::weights::SubstrateWeight<Runtime>;
+}
+
+// impl pallet_task_management::Config for Runtime {
+// 	type RuntimeEvent = RuntimeEvent;
+// 	type WeightInfo = pallet_task_management::weights::SubstrateWeight<Runtime>;
+// }
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
     pub enum Runtime
@@ -701,6 +717,7 @@ construct_runtime!(
         RootTesting: pallet_root_testing = 100,
         AsyncBacking: pallet_async_backing::{Pallet, Storage} = 110,
 
+        EdgeConnect: pallet_edge_connect = 120,
     }
 );
 
