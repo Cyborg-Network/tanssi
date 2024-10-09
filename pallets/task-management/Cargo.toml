@@ -1,0 +1,55 @@
+[package]
+name = "pallet-task-management"
+description = "Creation and management of tasks for workers to consume"
+version = "0.1.0"
+repository.workspace = true
+edition = "2021"
+
+[package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]
+
+[dependencies]
+parity-scale-codec = { workspace = true , version = "3.6.12", default-features = false, features = [
+	"derive",
+] }
+scale-info = { workspace = true , default-features = false, features = [
+	"derive",
+] }
+pallet-timestamp = { workspace = true , default-features = false }
+
+# frame deps
+frame-benchmarking = { workspace = true , default-features = false, optional = true }
+frame-support = { workspace = true , default-features = false }
+frame-system = { workspace = true , default-features = false }
+
+# Local
+pallet-edge-connect = { workspace = true }
+cyborg-primitives = { workspace = true }
+
+sp-io = { workspace = true , default-features = false }
+sp-core = { workspace = true , default-features = false }
+log = { workspace = true }
+
+[dev-dependencies]
+sp-runtime = { workspace = true }
+sp-std = { workspace = true }
+
+[features]
+default = ["std"]
+runtime-benchmarks = [
+	"frame-benchmarking/runtime-benchmarks",
+	"frame-support/runtime-benchmarks",
+	"frame-system/runtime-benchmarks",
+]
+std = [
+	"parity-scale-codec/std",
+	"frame-benchmarking?/std",
+	"frame-support/std",
+	"frame-system/std",
+	"scale-info/std",
+	"pallet-edge-connect/std",
+]
+try-runtime = [
+	"frame-support/try-runtime",
+	"frame-system/try-runtime",
+]

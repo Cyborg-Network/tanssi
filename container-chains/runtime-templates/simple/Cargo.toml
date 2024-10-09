@@ -28,6 +28,7 @@ pallet-cc-authorities-noting = { workspace = true }
 tanssi-runtime-common = { workspace = true }
 cyborg-primitives = { workspace = true }
 pallet-edge-connect = { workspace = true }
+pallet-task-management = { workspace = true }
 
 # Moonkit
 async-backing-primitives = { workspace = true }
@@ -184,6 +185,8 @@ std = [
 	"xcm-runtime-apis/std",
 	"cyborg-primitives/std",
 	"pallet-edge-connect/std",
+	"pallet-task-management/std",
+#	"pallet-status-aggregator/std",
 ]
 
 # Allow to print logs details (no wasm:stripped)
@@ -229,6 +232,9 @@ runtime-benchmarks = [
 	"xcm-primitives/runtime-benchmarks",
 	"xcm-runtime-apis/runtime-benchmarks",
 	"pallet-edge-connect/runtime-benchmarks",
+	"pallet-task-management/runtime-benchmarks",
+	"pallet-task-management/runtime-benchmarks",
+#	"pallet-status-aggregator/runtime-benchmarks",
 ]
 
 try-runtime = [
