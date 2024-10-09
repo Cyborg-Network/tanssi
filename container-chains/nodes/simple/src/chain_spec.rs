@@ -184,6 +184,7 @@ fn testnet_genesis(
         transaction_payment: Default::default(),
         tx_pause: Default::default(),
         system: Default::default(),
+        oracle_membership: Default::default(),
     };
 
     serde_json::to_value(g).unwrap()

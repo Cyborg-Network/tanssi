@@ -2091,6 +2091,7 @@ dependencies = [
  "pallet-proxy",
  "pallet-root-testing",
  "pallet-session",
+ "pallet-status-aggregator",
  "pallet-sudo",
  "pallet-task-management",
  "pallet-timestamp",
@@ -10184,6 +10185,27 @@ dependencies = [
  "sp-core",
  "sp-io",
  "sp-runtime",
+]
+
+[[package]]
+name = "pallet-status-aggregator"
+version = "0.1.0"
+dependencies = [
+ "cyborg-primitives",
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "orml-oracle",
+ "orml-traits",
+ "pallet-edge-connect",
+ "pallet-timestamp",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
 ]
 
 [[package]]

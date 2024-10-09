@@ -234,7 +234,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     spec_name: create_runtime_str!("container-chain-template"),
     impl_name: create_runtime_str!("container-chain-template"),
     authoring_version: 1,
-    spec_version: 801,
+    spec_version: 802,
     impl_version: 0,
     apis: RUNTIME_API_VERSIONS,
     transaction_version: 1,
@@ -677,7 +677,7 @@ parameter_types! {
 
 impl orml_oracle::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
-	type OnNewData = (); // SStatusAggregator;
+	type OnNewData = StatusAggregator;
 	type CombineData = DummyCombineData<Runtime>;
 	type Time = Timestamp;
 	type OracleKey = (AccountId, WorkerId);
@@ -716,6 +716,21 @@ impl pallet_edge_connect::Config for Runtime {
 impl pallet_task_management::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type WeightInfo = pallet_task_management::weights::SubstrateWeight<Runtime>;
+}
+
+parameter_types! {
+    pub const MaxBlockRangePeriod: BlockNumber = 50u32; // Set the max block range to 100 blocks
+}
+
+impl pallet_status_aggregator::Config for Runtime {
+type RuntimeEvent = RuntimeEvent;
+type WeightInfo = ();
+
+type MaxBlockRangePeriod = MaxBlockRangePeriod;
+type ThresholdUptimeStatus = ConstU8<75>;
+type MaxAggregateParamLength = ConstU32<300>;
+
+type WorkerInfoHandler = EdgeConnect;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -763,7 +778,7 @@ construct_runtime!(
     
         EdgeConnect: pallet_edge_connect = 120,
         TaskManagement: pallet_task_management = 121,
-        // StatusAggregator: pallet_status_aggregator = 122,
+        StatusAggregator: pallet_status_aggregator = 122,
     }
 );
 
