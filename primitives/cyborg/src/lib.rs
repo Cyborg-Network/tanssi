@@ -4,4 +4,4 @@ pub mod worker;
 
 pub mod task;
 
-// pub mod oracle;
+pub mod oracle;

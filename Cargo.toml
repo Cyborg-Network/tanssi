@@ -15,8 +15,8 @@ members = [
 	"solo-chains/node/*",
 	"solo-chains/runtime/dancelight",
 	"solo-chains/runtime/dancelight/constants",
-#	"orml/oracle",
-#	"orml/traits",
+	"orml/oracle",
+	"orml/traits",
 ]
 resolver = "2"
 
@@ -52,8 +52,8 @@ unsafe-code = { level = "deny", priority = 1 }
 
 [workspace.dependencies]
 
-#orml-oracle = { path = "orml/oracle", default-features = false }
-#orml-traits = { path = "orml/traits", default-features = false }
+orml-oracle = { path = "orml/oracle", default-features = false }
+orml-traits = { path = "orml/traits", default-features = false }
 
 cyborg-primitives = { path = "primitives/cyborg", default-features = false }
 pallet-edge-connect = { path = "pallets/edge-connect", default-features = false }

@@ -15,8 +15,8 @@ scale-info = { workspace = true, default-features = false, features = [
 	"derive",
 ] }
 
-# orml-oracle = { workspace = true }
-# orml-traits = { workspace = true }
+orml-oracle = { workspace = true }
+orml-traits = { workspace = true }
 
 # frame deps
 frame-benchmarking = { workspace = true , default-features = false, optional = true }
@@ -35,11 +35,13 @@ runtime-benchmarks = [
 	"frame-benchmarking/runtime-benchmarks",
 	"frame-support/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
+	"orml-oracle/runtime-benchmarks",
+#	"orml-traits/runtime-benchmarks",
 ]
 std = [
 	"parity-scale-codec/std",
-	# "orml-oracle/std",
-	# "orml-traits/std",
+	"orml-oracle/std",
+#	"orml-traits/std",
 	"frame-benchmarking?/std",
 	"frame-support/std",
 	"frame-system/std",

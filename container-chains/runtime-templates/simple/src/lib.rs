@@ -86,6 +86,11 @@ use {
     },
 };
 
+pub use cyborg_primitives::{
+	oracle::{DummyCombineData, ProcessStatus},
+	worker::WorkerId,
+};
+
 pub mod xcm_config;
 
 
@@ -666,6 +671,42 @@ impl pallet_multisig::Config for Runtime {
 
 impl_tanssi_pallets_config!(Runtime);
 
+parameter_types! {
+	pub RootOperatorAccountId: AccountId = AccountId::from([0xffu8; 32]);
+}
+
+impl orml_oracle::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type OnNewData = (); // SStatusAggregator;
+	type CombineData = DummyCombineData<Runtime>;
+	type Time = Timestamp;
+	type OracleKey = (AccountId, WorkerId);
+	type OracleValue = ProcessStatus;
+	type RootOperatorAccountId = RootOperatorAccountId;
+	type Members = OracleMembership;
+	type MaxHasDispatchedSize = ConstU32<8>;
+	type WeightInfo = ();
+	#[cfg(feature = "runtime-benchmarks")]
+	type MaxFeedValues = ConstU32<100>;
+	#[cfg(not(feature = "runtime-benchmarks"))]
+	type MaxFeedValues = ConstU32<100>;
+	#[cfg(feature = "runtime-benchmarks")]
+	type BenchmarkHelper = ();
+}
+
+impl pallet_membership::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type AddOrigin = EnsureRoot<AccountId>;
+	type RemoveOrigin = EnsureRoot<AccountId>;
+	type SwapOrigin = EnsureRoot<AccountId>;
+	type ResetOrigin = EnsureRoot<AccountId>;
+	type PrimeOrigin = EnsureRoot<AccountId>;
+
+	type MembershipInitialized = ();
+	type MembershipChanged = ();
+	type MaxMembers = ConstU32<16>;
+	type WeightInfo = pallet_membership::weights::SubstrateWeight<Runtime>;
+}
 
 impl pallet_edge_connect::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
@@ -717,6 +758,9 @@ construct_runtime!(
         RootTesting: pallet_root_testing = 100,
         AsyncBacking: pallet_async_backing::{Pallet, Storage} = 110,
 
+        Oracle: orml_oracle = 118,
+        OracleMembership: pallet_membership = 119,
+    
         EdgeConnect: pallet_edge_connect = 120,
         TaskManagement: pallet_task_management = 121,
         // StatusAggregator: pallet_status_aggregator = 122,
