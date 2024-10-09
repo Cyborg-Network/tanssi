@@ -50,8 +50,14 @@ unsafe-code = { level = "deny", priority = 1 }
 
 [workspace.dependencies]
 
-# Local 
+#orml-oracle = { path = "orml/oracle", default-features = false }
+#orml-traits = { path = "orml/traits", default-features = false }
+
 cyborg-primitives = { path = "primitives/cyborg", default-features = false }
+#pallet-edge-connect = { path = "pallets/edge-connect", default-features = false }
+#pallet-task-management = { path = "pallets/task-management", default-features = false }
+#pallet-status-aggregator = { path = "pallets/status-aggregator", default-features = false }
+
 
 # Members
 pallet-author-noting = { path = "pallets/author-noting", default-features = false }

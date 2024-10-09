@@ -26,6 +26,7 @@ dp-impl-tanssi-pallets-config = { workspace = true }
 dp-slot-duration-runtime-api = { workspace = true }
 pallet-cc-authorities-noting = { workspace = true }
 tanssi-runtime-common = { workspace = true }
+cyborg-primitives = { workspace = true }
 
 # Moonkit
 async-backing-primitives = { workspace = true }
@@ -180,6 +181,7 @@ std = [
 	"tanssi-runtime-common/std",
 	"xcm-primitives/std",
 	"xcm-runtime-apis/std",
+	"cyborg-primitives/std",
 ]
 
 # Allow to print logs details (no wasm:stripped)

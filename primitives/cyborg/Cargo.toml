@@ -1,16 +1,17 @@
 [package]
 name = "cyborg-primitives"
+description = "cyborg primitives"
+edition = "2021"
 version = "0.1.0"
-publish = false
 
-[package.metadata.docs.rs]
-targets = ["x86_64-unknown-linux-gnu"]
+[lints]
+workspace = true
 
 [dependencies]
-codec = { package = "parity-scale-codec", version = "3.6.12", default-features = false, features = [
+parity-scale-codec = { workspace = true, default-features = false, features = [
 	"derive",
 ] }
-scale-info = { version = "2.11.1", default-features = false, features = [
+scale-info = { workspace = true, default-features = false, features = [
 	"derive",
 ] }
 
@@ -18,16 +19,15 @@ scale-info = { version = "2.11.1", default-features = false, features = [
 # orml-traits = { workspace = true }
 
 # frame deps
-frame-benchmarking = { version = "35.0.0", default-features = false, optional = true }
-frame-support = { version = "35.0.0", default-features = false }
-frame-system = { version = "35.0.0", default-features = false }
+frame-benchmarking = { workspace = true , default-features = false, optional = true }
+frame-support = { workspace = true , default-features = false }
+frame-system = { workspace = true , default-features = false }
 
-sp-std = { version = "14.0.0", default-features = false }
-sp-core = { version = "34.0.0", default-features = false }
+sp-std = { workspace = true , default-features = false }
+sp-core = { workspace = true , default-features = false }
 
 [dev-dependencies]
-sp-io = { version = "37.0.0" }
-sp-runtime = { version = "38.0.0" }
+sp-runtime = { workspace = true }
 
 [features]
 default = ["std"]
@@ -37,7 +37,7 @@ runtime-benchmarks = [
 	"frame-system/runtime-benchmarks",
 ]
 std = [
-	"codec/std",
+	"parity-scale-codec/std",
 	# "orml-oracle/std",
 	# "orml-traits/std",
 	"frame-benchmarking?/std",
