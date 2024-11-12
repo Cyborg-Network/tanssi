@@ -25,6 +25,7 @@ frame-system = { workspace = true , default-features = false }
 # Local
 pallet-edge-connect = { workspace = true }
 cyborg-primitives = { workspace = true }
+pallet-payment = {workspace = true}
 
 sp-io = { workspace = true , default-features = false }
 sp-core = { workspace = true , default-features = false }
@@ -47,6 +48,7 @@ std = [
 	"frame-support/std",
 	"frame-system/std",
 	"scale-info/std",
+	"pallet-payment/std",
 	"pallet-edge-connect/std",
 ]
 try-runtime = [
