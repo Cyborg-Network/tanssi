@@ -1,29 +1,28 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 pub use pallet::*;
+
 #[cfg(test)]
 mod mock;
 
 #[cfg(test)]
 mod tests;
 
-//pub mod weights;
-//pub use weights::*;
-
 #[cfg(feature = "runtime-benchmarks")]
 mod benchmarking;
 
+pub mod weights;
+pub use weights::*;
+
 use codec::{Decode, Encode, MaxEncodedLen};
-use frame_support::{sp_runtime::RuntimeDebug, BoundedVec, Parameter, pallet_prelude::IsType};
-use orml_traits::{CombineData, OnNewData};
-use scale_info::TypeInfo;
-// use crate::{Config, MomentOf, TimestampedValueOf};
 use cyborg_primitives::{
 	oracle::{ProcessStatus, TimestampedValue},
 	worker::{WorkerId, WorkerInfoHandler, WorkerStatusType},
 };
+use frame_support::{pallet_prelude::IsType, sp_runtime::RuntimeDebug, BoundedVec};
 use frame_support::{traits::Get, LOG_TARGET};
-use pallet_timestamp;
+use orml_traits::{CombineData, OnNewData};
+use scale_info::TypeInfo;
 
 #[derive(PartialEq, Eq, Clone, RuntimeDebug, Encode, Decode, TypeInfo, MaxEncodedLen)]
 pub struct StatusInstance<BlockNumber> {
@@ -59,11 +58,11 @@ pub mod pallet {
 	use frame_system::pallet_prelude::*;
 	use scale_info::prelude::vec::Vec;
 
-	use frame_system::WeightInfo; //remove later
-
 	/// Configure the pallet by specifying the parameters and types on which it depends.
 	#[pallet::config]
-	pub trait Config: frame_system::Config + pallet_timestamp::Config {
+	pub trait Config:
+		frame_system::Config + pallet_timestamp::Config + pallet_edge_connect::Config
+	{
 		/// Because this pallet emits events, it depends on the runtime's definition of an event.
 		/// <https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/reference_docs/frame_runtime_types/index.html>
 		type RuntimeEvent: From<Event<Self>> + IsType<<Self as frame_system::Config>::RuntimeEvent>;
@@ -84,19 +83,29 @@ pub mod pallet {
 		type MaxAggregateParamLength: Get<u32>;
 
 		/// Updates Worker Status for Edge Connect
-		type WorkerInfoHandler: WorkerInfoHandler<Self::AccountId, WorkerId, BlockNumberFor<Self>, Self::Moment>;
+		type WorkerInfoHandler: WorkerInfoHandler<
+			Self::AccountId,
+			WorkerId,
+			BlockNumberFor<Self>,
+			Self::Moment,
+		>;
 	}
 
 	#[pallet::pallet]
 	pub struct Pallet<T>(_);
 
+	/// Stores the last block number that the pallet processed for clearing data.
+	/// This is used to track the last time data was aggregated and cleared by the pallet's hooks.
 	#[pallet::storage]
-	#[pallet::getter(fn last_updated_block)]
 	pub type LastClearedBlock<T: Config> = StorageValue<_, BlockNumberFor<T>, ValueQuery>;
 
-	/// Stores the amount of status entries for a given worker provided for this period
+	/// Stores the status entries (online/offline, available/unavailable) for each worker over a specific period.
+	/// The status is provided by different oracle feeders, and the data is collected and aggregated to calculate
+	/// the overall status for each worker.
+	///
+	/// - The storage key is a tuple of `(T::AccountId, WorkerId)`, which uniquely identifies the worker.
+	/// - The value is a bounded vector of `StatusInstance`, which contains the worker's status over time.
 	#[pallet::storage]
-	#[pallet::getter(fn worker_status_entries)]
 	pub type WorkerStatusEntriesPerPeriod<T: Config> = StorageMap<
 		_,
 		Twox64Concat,
@@ -105,15 +114,22 @@ pub mod pallet {
 		ValueQuery,
 	>;
 
-	/// Tracks whether an oracle provider has submitted status for a given worker during the current period
+	/// Tracks whether a specific oracle provider has submitted worker status data during the current period.
+	/// This is used to prevent multiple submissions from the same oracle provider within a period.
+	///
+	/// - The key is a tuple of the oracle provider's account and the worker `(T::AccountId, (T::AccountId, WorkerId))`.
+	/// - The value is a boolean indicating whether the oracle has already submitted data.
 	#[pallet::storage]
-	#[pallet::getter(fn submitted_per_period)]
 	pub type SubmittedPerPeriod<T: Config> =
 		StorageMap<_, Twox64Concat, (T::AccountId, (T::AccountId, WorkerId)), bool, ValueQuery>;
 
-	/// Resulting percentages for status uptimes
+	/// Stores the resulting percentage status (online and available) for each worker after aggregation.
+	/// This is calculated by taking the status data submitted during the period and determining the
+	/// percentage of time the worker was online and available.
+	///
+	/// - The key is `(T::AccountId, WorkerId)`, representing the worker.
+	/// - The value is `ProcessStatusPercentages`, which contains the percentages and the block number of the last processed status.
 	#[pallet::storage]
-	#[pallet::getter(fn worker_status_resulting_percentages)]
 	pub type ResultingWorkerStatusPercentages<T: Config> = StorageMap<
 		_,
 		Twox64Concat,
@@ -122,29 +138,45 @@ pub mod pallet {
 		ValueQuery,
 	>;
 
-	/// Resulting status determined by given percentage threshold
+	/// Stores the final status (online/offline and available/unavailable) for each worker based on the percentage thresholds.
+	/// The final status is determined based on the configured threshold values for uptime.
+	///
+	/// - The key is `(T::AccountId, WorkerId)`, representing the worker.
+	/// - The value is `ProcessStatus`, which contains the final online and available status for the worker.
 	#[pallet::storage]
-	#[pallet::getter(fn worker_status_result)]
 	pub type ResultingWorkerStatus<T: Config> =
 		StorageMap<_, Twox64Concat, (T::AccountId, WorkerId), ProcessStatus, ValueQuery>;
 
+	/// The `Event` enum contains the various events that can be emitted by this pallet.
+	/// Events are emitted when significant actions or state changes happen in the pallet.
 	#[pallet::event]
 	#[pallet::generate_deposit(pub(super) fn deposit_event)]
 	pub enum Event<T: Config> {
+		/// Event emitted when the worker status is updated based on aggregated data from the oracle.
+		/// This provides the new online and availability status for the worker and the block number where the status was last updated.
+		///
+		/// - `worker`: A tuple containing the worker's account ID and the worker ID.
+		/// - `online`: A boolean indicating whether the worker is online.
+		/// - `available`: A boolean indicating whether the worker is available.
+		/// - `last_block_processed`: The block number at which the worker's status was last updated.
 		UpdateFromAggregatedWorkerInfo {
 			worker: (T::AccountId, WorkerId),
 			online: bool,
 			available: bool,
 			last_block_processed: BlockNumberFor<T>,
 		},
-		LastBlockUpdated {
-			block_number: BlockNumberFor<T>,
-		},
+
+		/// Event emitted when the last block is updated after clearing data for the current period.
+		/// This indicates that data from the oracle has been successfully processed and cleared for the given block range.
+		///
+		/// - `block_number`: The block number at which the clearing occurred.
+		LastBlockUpdated { block_number: BlockNumberFor<T> },
 	}
 
-	/// Pallet Errors
-	pub enum Error {}
-
+	/// This hook function is called at the end of each block to process worker status data for a given period.
+	/// It checks whether the current block number exceeds the last cleared block by the maximum block range period.
+	/// If so, it aggregates the worker status data for the period, clears outdated data, and updates the worker status.
+	/// It also logs the result of the clearing process and emits an event when the last block is updated.
 	/// This hook calculates storage values in this pallet updated by the oracle per MaxBlockRangePeriod
 	#[pallet::hooks]
 	impl<T: Config> Hooks<BlockNumberFor<T>> for Pallet<T> {
@@ -237,18 +269,9 @@ pub mod pallet {
 				log::warn!("Worker cluster not found for the given account and worker_id.");
 			}
 		}
-
-		// This public wrapper function is exposed only when the `runtime-benchmarks` feature is enabled.
-		// It allows access to the private `derive_status_percentages_for_period` function for benchmarking purposes.
-		// The feature gate ensures that this function is only available in benchmarking builds and not in normal runtime builds,
-		// keeping the core functionality private while still enabling performance measurements.
-		#[cfg(feature = "runtime-benchmarks")]
-		pub fn benchmark_derive_status_percentages_for_period() {
-			Self::derive_status_percentages_for_period();
-		}
 	}
 
-	/// Data from the oracle first enters into this pallet through this trait implmentation and updates this pallet's storage
+	/// Data from the oracle first enters into this pallet through this trait implementation and updates this pallet's storage
 	impl<T: Config> OnNewData<T::AccountId, (T::AccountId, u64), ProcessStatus> for Pallet<T> {
 		fn on_new_data(who: &T::AccountId, key: &(T::AccountId, u64), value: &ProcessStatus) {
 			if T::WorkerInfoHandler::get_worker_cluster(key).is_none() {

@@ -1,3 +1,4 @@
+pub use crate as pallet_status_aggregator;
 use frame_support::{derive_impl, parameter_types, weights::constants::RocksDbWeight};
 use frame_system::{mocking::MockBlock, GenesisConfig};
 use pallet_edge_connect;
@@ -26,14 +27,14 @@ mod test_runtime {
 	#[runtime::pallet_index(0)]
 	pub type System = frame_system;
 
-    #[runtime::pallet_index(1)]
+	#[runtime::pallet_index(1)]
 	pub type Timestamp = pallet_timestamp;
 
 	#[runtime::pallet_index(2)]
-	pub type EdgeConnect = pallet_edge_connect;
+	pub type EdgeConnectModule = pallet_edge_connect;
 
 	#[runtime::pallet_index(3)]
-	pub type StatusAggregator = crate;
+	pub type StatusAggregator = pallet_status_aggregator;
 }
 
 pub type AccountId = u64;
@@ -47,6 +48,19 @@ impl frame_system::Config for Test {
 	type DbWeight = RocksDbWeight;
 }
 
+parameter_types! {
+	pub const MaxBlockRangePeriod: BlockNumber = 5u32;
+}
+
+impl pallet_status_aggregator::Config for Test {
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = ();
+	type MaxBlockRangePeriod = MaxBlockRangePeriod;
+	type ThresholdUptimeStatus = ConstU8<75>;
+	type MaxAggregateParamLength = ConstU32<10>;
+	type WorkerInfoHandler = EdgeConnectModule;
+}
+
 impl pallet_timestamp::Config for Test {
 	type Moment = u64;
 	type OnTimestampSet = ();
@@ -57,20 +71,6 @@ impl pallet_timestamp::Config for Test {
 impl pallet_edge_connect::Config for Test {
 	type RuntimeEvent = RuntimeEvent;
 	type WeightInfo = ();
-}
-
-parameter_types! {
-		pub const MaxBlockRangePeriod: BlockNumber = 5u32;
-}
-
-impl crate::Config for Test {
-	type RuntimeEvent = RuntimeEvent;
-	type WeightInfo = ();
-
-	type MaxBlockRangePeriod = MaxBlockRangePeriod;
-	type ThresholdUptimeStatus = ConstU8<75>;
-	type MaxAggregateParamLength = ConstU32<10>;
-	type WorkerInfoHandler = EdgeConnect;
 }
 
 // Build genesis storage according to the mock runtime.
