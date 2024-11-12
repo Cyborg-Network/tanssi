@@ -98,6 +98,7 @@ pub use pallet_edge_connect;
 pub use pallet_payment;
 pub use pallet_status_aggregator;
 pub use pallet_task_management;
+pub use pallet_zk_verifier;
 
 // Polkadot imports
 use polkadot_runtime_common::BlockHashCount;
@@ -740,6 +741,20 @@ impl pallet_payment::Config for Runtime {
 	type WeightInfo = pallet_payment::SubstrateWeight<Runtime>;
 }
 
+parameter_types! {
+	pub const MaxPublicInputsLength: u32 = 50;
+	pub const MaxVerificationKeyLength: u32 = 10000;
+	pub const MaxProofLength: u32 = 5000;
+}
+
+impl pallet_zk_verifier::Config for Runtime {
+	type MaxPublicInputsLength = MaxPublicInputsLength;
+	type MaxProofLength = MaxProofLength;
+	type MaxVerificationKeyLength = MaxVerificationKeyLength;
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = ();
+}
+
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
     pub enum Runtime
@@ -789,7 +804,7 @@ construct_runtime!(
 
         Payment: pallet_payment = 123,
 
-        // ZKVerifier: pallet_zk_verifier = 124,
+        ZKVerifier: pallet_zk_verifier = 124,
     }
 );
 

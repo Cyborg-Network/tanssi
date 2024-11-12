@@ -60,7 +60,7 @@ pallet-edge-connect = { path = "pallets/edge-connect", default-features = false 
 pallet-task-management = { path = "pallets/task-management", default-features = false }
 pallet-status-aggregator = { path = "pallets/status-aggregator", default-features = false }
 pallet-payment = { path = "pallets/payment", default-features = false }
-
+pallet-zk-verifier = { path = "pallets/zk-verifier", default-features = false }
 
 # Members
 pallet-author-noting = { path = "pallets/author-noting", default-features = false }

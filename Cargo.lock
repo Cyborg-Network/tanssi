@@ -1024,6 +1024,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "bls12_381"
+version = "0.7.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a3c196a77437e7cc2fb515ce413a6401291578b5afc8ecb29a3c7ab957f05941"
+dependencies = [
+ "ff 0.12.1",
+ "group 0.12.1",
+ "pairing",
+ "rand_core",
+ "subtle 2.5.0",
+]
+
+[[package]]
 name = "bounded-collections"
 version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2103,6 +2116,7 @@ dependencies = [
  "pallet-xcm",
  "pallet-xcm-benchmarks",
  "pallet-xcm-executor-utils",
+ "pallet-zk-verifier",
  "parachains-common",
  "parity-scale-codec",
  "polkadot-parachain-primitives",
@@ -3874,9 +3888,9 @@ dependencies = [
  "base16ct",
  "crypto-bigint",
  "digest 0.10.7",
- "ff",
+ "ff 0.13.0",
  "generic-array 0.14.7",
- "group",
+ "group 0.13.0",
  "pkcs8",
  "rand_core",
  "sec1",
@@ -4092,7 +4106,7 @@ dependencies = [
  "impl-serde",
  "primitive-types",
  "scale-info",
- "uint",
+ "uint 0.9.5",
 ]
 
 [[package]]
@@ -4492,6 +4506,17 @@ checksum = "e182f7dbc2ef73d9ef67351c5fbbea084729c48362d3ce9dd44c28e32e277fe5"
 dependencies = [
  "libc",
  "thiserror",
+]
+
+[[package]]
+name = "ff"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d013fc25338cc558c5c2cfbad646908fb23591e2404481826742b651c9af7160"
+dependencies = [
+ "bitvec",
+ "rand_core",
+ "subtle 2.5.0",
 ]
 
 [[package]]
@@ -5489,11 +5514,22 @@ dependencies = [
 
 [[package]]
 name = "group"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5dfbfb3a6cfbd390d5c9564ab283a0349b9b9fcd46a706c1eb10e0db70bfbac7"
+dependencies = [
+ "ff 0.12.1",
+ "rand_core",
+ "subtle 2.5.0",
+]
+
+[[package]]
+name = "group"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f0f9ef7462f7c099f518d754361858f86d8a07af53ba9af0fe635bbccb151a63"
 dependencies = [
- "ff",
+ "ff 0.13.0",
  "rand_core",
  "subtle 2.5.0",
 ]
@@ -6721,7 +6757,7 @@ dependencies = [
  "sha2 0.10.8",
  "smallvec",
  "thiserror",
- "uint",
+ "uint 0.9.5",
  "unsigned-varint 0.7.2",
  "void",
 ]
@@ -7189,7 +7225,7 @@ dependencies = [
  "tokio-util",
  "tracing",
  "trust-dns-resolver",
- "uint",
+ "uint 0.9.5",
  "unsigned-varint 0.8.0",
  "url",
  "webpki",
@@ -8476,6 +8512,15 @@ name = "owo-colors"
 version = "3.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c1b04fb49957986fdce4d6ee7a65027d55d4b6d2265e5848bbb507b58ccfdb6f"
+
+[[package]]
+name = "pairing"
+version = "0.22.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "135590d8bdba2b31346f9cd1fb2a912329f5135e832a4f422942eb6ead8b6b3b"
+dependencies = [
+ "group 0.12.1",
+]
 
 [[package]]
 name = "pallet-asset-conversion"
@@ -10583,6 +10628,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-zk-verifier"
+version = "0.1.0"
+dependencies = [
+ "bls12_381",
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "group 0.12.1",
+ "pairing",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "serde_json",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+ "uint 0.8.5",
+]
+
+[[package]]
 name = "parachains-common"
 version = "17.0.0"
 source = "git+https://github.com/moondance-labs/polkadot-sdk?branch=tanssi-polkadot-stable2407#28cdd1c8b6c59b1f72a934d04608bf8af82caa72"
@@ -12530,7 +12596,7 @@ dependencies = [
  "impl-rlp",
  "impl-serde",
  "scale-info",
- "uint",
+ "uint 0.9.5",
 ]
 
 [[package]]
@@ -18483,6 +18549,18 @@ name = "ucd-trie"
 version = "0.1.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ed646292ffc8188ef8ea4d1e0e0150fb15a5c2e12ad9b8fc191ae7a8a7f3c4b9"
+
+[[package]]
+name = "uint"
+version = "0.8.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9db035e67dfaf7edd9aebfe8676afcd63eed53c8a4044fed514c8cccf1835177"
+dependencies = [
+ "byteorder",
+ "crunchy",
+ "rustc-hex",
+ "static_assertions",
+]
 
 [[package]]
 name = "uint"
