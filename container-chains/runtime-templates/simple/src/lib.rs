@@ -95,7 +95,8 @@ pub mod xcm_config;
 
 
 pub use pallet_edge_connect;
-// pub use pallet_status_aggregator;
+pub use pallet_payment;
+pub use pallet_status_aggregator;
 pub use pallet_task_management;
 
 // Polkadot imports
@@ -234,7 +235,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     spec_name: create_runtime_str!("container-chain-template"),
     impl_name: create_runtime_str!("container-chain-template"),
     authoring_version: 1,
-    spec_version: 802,
+    spec_version: 903,
     impl_version: 0,
     apis: RUNTIME_API_VERSIONS,
     transaction_version: 1,
@@ -723,14 +724,20 @@ parameter_types! {
 }
 
 impl pallet_status_aggregator::Config for Runtime {
-type RuntimeEvent = RuntimeEvent;
-type WeightInfo = ();
+    type RuntimeEvent = RuntimeEvent;
+    type WeightInfo = ();
 
-type MaxBlockRangePeriod = MaxBlockRangePeriod;
-type ThresholdUptimeStatus = ConstU8<75>;
-type MaxAggregateParamLength = ConstU32<300>;
+    type MaxBlockRangePeriod = MaxBlockRangePeriod;
+    type ThresholdUptimeStatus = ConstU8<75>;
+    type MaxAggregateParamLength = ConstU32<300>;
 
-type WorkerInfoHandler = EdgeConnect;
+    type WorkerInfoHandler = EdgeConnect;
+}
+
+impl pallet_payment::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Currency = Balances;
+	type WeightInfo = pallet_payment::SubstrateWeight<Runtime>;
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
@@ -779,6 +786,10 @@ construct_runtime!(
         EdgeConnect: pallet_edge_connect = 120,
         TaskManagement: pallet_task_management = 121,
         StatusAggregator: pallet_status_aggregator = 122,
+
+        Payment: pallet_payment = 123,
+
+        // ZKVerifier: pallet_zk_verifier = 124,
     }
 );
 

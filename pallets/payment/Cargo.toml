@@ -1,0 +1,54 @@
+[package]
+authors.workspace = true
+description = "Pallet allow users to purchase compute hours from a single service (Cyborg). Users can buy compute hours by transferring tokens, which are credited to their account for future consumption."
+name = "pallet-payment"
+version = "0.1.0"
+repository.workspace = true
+edition = "2021"
+
+[package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]
+
+[dependencies]
+parity-scale-codec = { workspace = true , version = "3.6.12", default-features = false, features = [
+	"derive",
+] }
+cyborg-primitives = { workspace = true }
+frame-benchmarking = { workspace = true, default-features = false, optional=true } 
+frame-support = { workspace = true, default-features = false }
+frame-system = { workspace = true, default-features = false }
+pallet-balances = { workspace = true, default-features = false }
+pallet-sudo = { workspace = true, default-features = false }
+pallet-timestamp = { workspace = true, default-features = false }
+scale-info = { workspace = true, default-features = false}
+sp-runtime= { workspace = true, default-features = false }
+sp-std = { workspace = true, default-features = false }
+
+[dev-dependencies]
+sp-core = { workspace = true }
+sp-io = { workspace = true }
+sp-runtime = { workspace = true }
+
+[features]
+default = ["std"]
+runtime-benchmarks = [
+	"frame-benchmarking/runtime-benchmarks",
+	"frame-support/runtime-benchmarks",
+	"frame-system/runtime-benchmarks",
+]
+std = [
+	"parity-scale-codec/std",
+	"cyborg-primitives/std",
+	"frame-benchmarking?/std",
+	"frame-support/std",
+	"frame-system/std",
+	"pallet-balances/std",
+	"pallet-sudo/std",
+	"scale-info/std",
+]
+try-runtime = [
+	"frame-support/try-runtime",
+	"frame-system/try-runtime",
+]
+
+

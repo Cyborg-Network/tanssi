@@ -30,6 +30,7 @@ cyborg-primitives = { workspace = true }
 pallet-edge-connect = { workspace = true }
 pallet-task-management = { workspace = true }
 pallet-status-aggregator = { workspace = true }
+pallet-payment = { workspace = true }
 
 # Orml 
 orml-oracle = { workspace = true }
@@ -193,6 +194,7 @@ std = [
 	"cyborg-primitives/std",
 	"pallet-edge-connect/std",
 	"pallet-task-management/std",
+	"pallet-payment/std",
 	"orml-oracle/std",
 #	"orml-traits/std",
 	"pallet-status-aggregator/std",
@@ -243,7 +245,7 @@ runtime-benchmarks = [
 	"xcm-runtime-apis/runtime-benchmarks",
 	"pallet-edge-connect/runtime-benchmarks",
 	"pallet-task-management/runtime-benchmarks",
-	"pallet-task-management/runtime-benchmarks",
+	# "pallet-payment/runtime-benchmarks",
 	"orml-oracle/runtime-benchmarks",
 #	"orml-traits/runtime-benchmarks",
 	"pallet-status-aggregator/runtime-benchmarks",

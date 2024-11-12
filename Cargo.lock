@@ -2088,6 +2088,7 @@ dependencies = [
  "pallet-message-queue",
  "pallet-migrations 0.1.0",
  "pallet-multisig",
+ "pallet-payment",
  "pallet-proxy",
  "pallet-root-testing",
  "pallet-session",
@@ -9839,6 +9840,25 @@ dependencies = [
  "serde",
  "sp-core",
  "sp-runtime",
+]
+
+[[package]]
+name = "pallet-payment"
+version = "0.1.0"
+dependencies = [
+ "cyborg-primitives",
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "pallet-balances",
+ "pallet-sudo",
+ "pallet-timestamp",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
 ]
 
 [[package]]
