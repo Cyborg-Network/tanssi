@@ -87,7 +87,7 @@ use {
 };
 
 pub use cyborg_primitives::{
-	oracle::{DummyCombineData, ProcessStatus},
+	oracle::{DummyCombineData, ProcessStatus, OracleWorkerFormat},
 	worker::WorkerId,
 };
 
@@ -236,7 +236,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     spec_name: create_runtime_str!("container-chain-template"),
     impl_name: create_runtime_str!("container-chain-template"),
     authoring_version: 1,
-    spec_version: 903,
+    spec_version: 904,
     impl_version: 0,
     apis: RUNTIME_API_VERSIONS,
     transaction_version: 1,
@@ -682,7 +682,7 @@ impl orml_oracle::Config for Runtime {
 	type OnNewData = StatusAggregator;
 	type CombineData = DummyCombineData<Runtime>;
 	type Time = Timestamp;
-	type OracleKey = (AccountId, WorkerId);
+	type OracleKey = OracleWorkerFormat<AccountId>;
 	type OracleValue = ProcessStatus;
 	type RootOperatorAccountId = RootOperatorAccountId;
 	type Members = OracleMembership;
